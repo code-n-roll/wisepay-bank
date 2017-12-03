@@ -1,9 +1,12 @@
 const express = require('express');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://wisepay:wisepass@ds113906.mlab.com:13906/wisepay-bank', {
-    useMongoClient: true
+mongoose.connect(process.env.MONGO_URI, {
+  useMongoClient: true
 });
 mongoose.Promise = global.Promise;
 
@@ -15,5 +18,5 @@ app.use(bodyParser.json())
 app.use('/', bankRoutes);
 
 app.listen(8001, () => {
-    console.log('bank listening')
+  console.log('bank listening')
 });
