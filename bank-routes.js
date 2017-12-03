@@ -1,7 +1,8 @@
+require('dotenv').config();
+
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const secrets = require('./secrets.json');
 
 const User = require('./models/user');
 
@@ -34,7 +35,7 @@ router.post('/auth', async (req, res) => {
 
     const token = jwt.sign({
         id: user.id
-    }, secrets.secretKey);
+    }, process.env.secretKey);
     
     res.json({
         'access_token': token
@@ -43,7 +44,7 @@ router.post('/auth', async (req, res) => {
 
 router.post('/sendmoney', async (req, res) => {
     const token = req.headers['authorization'];
-    const decodedToken = jwt.verify(token, secrets.secretKey);
+    const decodedToken = jwt.verify(token, process.env.secretKey);
 
     const { cardFrom, cardTo, amountToSend } = req.body;
     
