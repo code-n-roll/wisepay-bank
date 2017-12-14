@@ -3,7 +3,6 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 
 const User = require('./models/user');
-const ObjectId = require('mongoose').Schema.Types.ObjectId;
 
 router.post('/auth', async (req, res) => {
   const { model } = req.body;
@@ -100,7 +99,7 @@ router.post('/reg', async (req, res) => {
     );
   }
 
-  let user = new User({
+  const user = new User({
     bankCard: {
       cardNumber: model.bankCard.cardNumber,
       holder: {
@@ -125,8 +124,7 @@ router.post('/reg', async (req, res) => {
       errorResponse('Something happened in db')
     );
   }
-
-})
+});
 
 function errorResponse(text) {
   return {
