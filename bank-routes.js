@@ -5,9 +5,11 @@ const jwt = require('jsonwebtoken');
 const User = require('./models/user');
 
 router.post('/auth', async (req, res) => {
-  const { model } = req.body;
-  if (!model) {
-    res.status(400).end();
+  const model = req.body;
+  if (Object.keys(model).length === 0) {
+    res.status(400).json(
+      errorResponse('Invalid request data')
+    );
     return;
   }
 
@@ -28,7 +30,9 @@ router.post('/auth', async (req, res) => {
   }
 
   if (!user) {
-    res.status(404).end();
+    res.status(404).json(
+      errorResponse('User not found')
+    );
     return;
   }
 
@@ -58,12 +62,16 @@ router.post('/sendmoney', async (req, res) => {
   const userTo = await User.findOne({ _id: decodedUserToId.id });
 
   if (decodedToken.cardOwner) {
-    res.status(401).end();
+    res.status(401).json(
+      errorResponse('Access denied')
+    );
     return;
   }
 
   if (!userFrom || !userTo) {
-    res.status(404).end();
+    res.status(404).json(
+      errorResponse('Invalid token')
+    );
     return;
   }
 
@@ -82,10 +90,12 @@ router.post('/sendmoney', async (req, res) => {
 });
 
 router.post('/reg', async (req, res) => {
-  const { model } = req.body;
+  const model = req.body;
 
-  if (!model) {
-    res.status(400).end();
+  if (Object.keys(model).length === 0) {
+    res.status(400).json(
+      errorResponse('Invalid request data')
+    );
     return;
   }
 
