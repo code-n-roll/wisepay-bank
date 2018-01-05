@@ -61,7 +61,7 @@ router.post('/sendmoney', async (req, res) => {
   const userFrom = await User.findOne({ _id: decodedToken.id });
   const userTo = await User.findOne({ _id: decodedUserToId.id });
 
-  if (decodedToken.cardOwner) {
+  if (!decodedToken.cardOwner) {
     res.status(401).json(
       errorResponse('Access denied')
     );
